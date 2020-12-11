@@ -7,6 +7,11 @@ import org.springframework.stereotype.Service;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Service Class for Part 2 of Challenge
+ * @author Steven Chang
+ *
+ */
 @Service
 @Getter
 @Setter
@@ -15,11 +20,12 @@ public class SeatingService {
 	
 	/**
 	 * Repeats round() until an unchanging state is found
+	 * @param tolerance
 	 * @return total occupied seats
 	 */
-	public ArrayList<ArrayList<Character>> stablize() {
+	public ArrayList<ArrayList<Character>> stablize(int tolerance) {
 		System.out.println("Running rounds");
-		while(round());
+		while(round(tolerance));
 //		System.out.println("Final State");
 //		currentLayout.forEach(System.out::println);
 		System.out.println("Complete");
@@ -28,9 +34,10 @@ public class SeatingService {
 	
 	/**
 	 * Execute one round
+	 * @param tolerance level
 	 * @return true if changed, false if no change
 	 */
-	public boolean round() {
+	public boolean round(int tolerance) {
 		ArrayList<ArrayList<Character>> temp = new ArrayList<>(currentLayout.size());
 		currentLayout.forEach(sublist -> temp.add(new ArrayList<Character>(sublist)));	//deep copy currentLayout
 		for(int r = 0; r < currentLayout.size(); r ++) {		//for every element
@@ -38,7 +45,7 @@ public class SeatingService {
 				if (currentLayout.get(r).get(c) == '.') continue;
 				int count = getSurroundings(r, c);
 				if (count == 0) temp.get(r).set(c, '#');
-				if (count >= 4) temp.get(r).set(c, 'L');
+				if (count >= tolerance) temp.get(r).set(c, 'L');
 				
 			}
 		}

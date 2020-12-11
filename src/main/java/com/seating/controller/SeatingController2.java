@@ -11,17 +11,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.seating.service.SeatingService;
+import com.seating.service.SeatingService2;
 
 @RestController
-@RequestMapping("/seating")
+@RequestMapping("/seating2")
 @CrossOrigin
-public class SeatingController {
+public class SeatingController2 {
 	@Autowired
-	SeatingService ss;
-	
+	SeatingService2 ss;
+
 	/**
 	 * Formats an unformatted input
+	 * 
 	 * @param input String
 	 * @return ArrayList of ArrayList of Characters
 	 */
@@ -40,13 +41,14 @@ public class SeatingController {
 
 	/**
 	 * Returns the final state of the seating arrangement
+	 * 
 	 * @param input
 	 * @return String
 	 */
 	@PostMapping("/finalState")
 	public String getFinalState(@RequestBody String input) {
 		ss.setCurrentLayout(format(input));
-		ArrayList<ArrayList<Character>> finalState = ss.stablize(4);
+		ArrayList<ArrayList<Character>> finalState = ss.stablize(5);
 		StringBuilder finalString = new StringBuilder();
 		finalState.forEach(row -> {
 			String rowString = row.stream().map(ch -> Character.toString(ch)).collect(Collectors.joining());
@@ -54,19 +56,20 @@ public class SeatingController {
 			finalString.append(rowString + '\n');
 		});
 //		System.out.println(finalString.toString().trim());
-//		System.out.println(ss.round());
+		
 		return finalString.toString().trim();
 	}
-	
+
 	/**
 	 * Returns the final count of occupied seats
+	 * 
 	 * @param input
 	 * @return int
 	 */
 	@PostMapping("/finalCount")
 	public int getFinalCount(@RequestBody String input) {
 		ss.setCurrentLayout(format(input));
-		ss.stablize(4);
+		ss.stablize(5);
 		return ss.countOccupied();
 	}
 }
